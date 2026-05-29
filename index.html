@@ -3,103 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Час Пик Меню</title>
+    <title>Час Пик • Premium Menu</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        :root {
+            --bg-main: #0d0d0d;
+            --bg-card: #181818;
+            --bg-card-hover: #222222;
+            --accent: #ffb300;
+            --accent-gradient: linear-gradient(135deg, #ffcc00 0%, #ff9100 100%);
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+        }
+
         body {
-            background-color: #121212;
-            color: #e0e0e0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
-            padding-bottom: 100px;
+            padding-bottom: 110px;
+            overflow-x: hidden;
         }
+
+        /* Шапка профиля заведения */
         .header {
             text-align: center;
-            padding: 25px 15px;
-            background: linear-gradient(180deg, #1a1a1a 0%, #121212 100%);
-            border-bottom: 1px solid #2a2a2a;
+            padding: 35px 20px;
+            background: linear-gradient(180deg, rgba(26,26,26,0.8) 0%, rgba(13,13,13,1) 100%);
+            border-bottom: 1px solid #222;
+            position: relative;
         }
         .header h1 {
-            color: #ffb300;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin: 0;
-            font-size: 26px;
-            letter-spacing: 2px;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 3px;
             text-transform: uppercase;
+            text-shadow: 0 4px 20px rgba(255,179,0,0.15);
         }
         .header p {
-            margin: 5px 0 0 0;
-            color: #888;
+            margin: 8px 0 0 0;
+            color: var(--text-muted);
             font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 1px;
         }
+
+        /* Инфо-плашка */
         .delivery-info {
-            background-color: #1a1a1a;
-            margin: 12px;
-            padding: 12px;
-            border-radius: 8px;
-            border-left: 4px solid #ffb300;
+            background: rgba(24, 24, 24, 0.9);
+            margin: 15px;
+            padding: 14px;
+            border-radius: 14px;
+            border: 1px solid #2a2a2a;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             font-size: 13px;
-            line-height: 1.4;
+            line-height: 1.5;
         }
+        .delivery-highlight {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Категории скролл-бар */
         .categories {
             display: flex;
             overflow-x: auto;
             white-space: nowrap;
-            padding: 10px 5px;
-            background-color: #1a1a1a;
+            padding: 12px 10px;
+            background-color: rgba(13, 13, 13, 0.95);
             position: sticky;
             top: 0;
             z-index: 10;
-            border-bottom: 1px solid #2a2a2a;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #222;
         }
         .categories::-webkit-scrollbar { display: none; }
+        
         .category-btn {
-            background: none;
-            border: none;
-            color: #888;
-            padding: 8px 14px;
+            background: #1c1c1c;
+            border: 1px solid #2b2b2b;
+            color: var(--text-muted);
+            padding: 10px 18px;
+            margin: 0 5px;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 700;
+            border-radius: 25px;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
         .category-btn.active {
-            color: #ffb300;
-            border-bottom: 2px solid #ffb300;
+            background: var(--accent-gradient);
+            color: #000;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(255, 179, 0, 0.3);
+            transform: scale(1.05);
         }
+
+        /* Заголовки секций */
         .section-title {
-            padding: 15px 15px 5px 15px;
-            font-size: 18px;
-            color: #ffb300;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .menu-section { display: none; }
-        .menu-section.active { display: block; }
-        
-        .item-card {
-            background: #1c1c1c;
-            margin: 0 12px 12px 12px;
-            border-radius: 10px;
+            padding: 25px 15px 10px 15px;
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 0.5px;
             display: flex;
-            border: 1px solid #262626;
+            align-items: center;
         }
+        .section-title::after {
+            content: '';
+            flex: 1;
+            margin-left: 15px;
+            height: 1px;
+            background: #222;
+        }
+
+        .menu-section { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .menu-section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Новые глянцевые карточки товаров */
+        .item-card {
+            background: var(--bg-card);
+            margin: 0 15px 14px 15px;
+            border-radius: 16px;
+            display: flex;
+            border: 1px solid #222;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .item-card:active {
+            background: var(--bg-card-hover);
+            border-color: #333;
+        }
+        
+        /* Бейджик для акций или хит-продаж */
+        .badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--accent-gradient);
+            color: #000;
+            font-size: 9px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-bottom-left-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
         .item-details {
-            padding: 12px;
+            padding: 16px;
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
         .item-details h3 {
-            margin: 0 0 4px 0;
-            font-size: 16px;
-            color: #fff;
+            margin: 0 0 6px 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            padding-right: 50px; /* Чтобы текст не заходил на бейджик */
         }
         .item-details p {
-            margin: 0 0 10px 0;
-            color: #8a8a8a;
-            font-size: 12px;
-            line-height: 1.4;
+            margin: 0 0 16px 0;
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.5;
+            font-weight: 400;
         }
         .item-row {
             display: flex;
@@ -107,57 +189,81 @@
             align-items: center;
         }
         .price {
-            font-size: 15px;
-            font-weight: 700;
-            color: #ffb300;
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
         }
+
+        /* Кнопки управления количеством */
         .controls {
             display: flex;
             align-items: center;
-            background: #2a2a2a;
-            border-radius: 20px;
-            padding: 2px;
+            background: #222;
+            border-radius: 25px;
+            padding: 3px;
+            border: 1px solid #333;
         }
         .cnt-btn {
-            background: none;
+            background: #2e2e2e;
             border: none;
             color: #fff;
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             font-size: 16px;
+            font-weight: bold;
+            border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: background 0.2s;
         }
+        .cnt-btn:active { background: #444; }
         .cnt-value {
-            padding: 0 8px;
-            font-size: 13px;
-            font-weight: 600;
-            min-width: 14px;
+            padding: 0 12px;
+            font-size: 14px;
+            font-weight: 700;
+            min-width: 16px;
             text-align: center;
+            color: var(--accent);
         }
+
+        /* Выплывающая неоновая панель заказа */
         .footer-bar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: #1a1a1a;
-            padding: 12px;
+            background: rgba(20, 20, 20, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 16px 20px;
             border-top: 1px solid #2a2a2a;
             display: none;
             z-index: 100;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.7);
+            animation: slideUp 0.3s cubic-bezier(0.1, 0.7, 0.1, 1);
         }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
         .order-btn {
-            background: #ffb300;
-            color: #121212;
+            background: var(--accent-gradient);
+            color: #0d0d0d;
             border: none;
-            padding: 12px;
+            padding: 15px;
             width: 100%;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 700;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 800;
             cursor: pointer;
+            box-shadow: 0 4px 20px rgba(255, 145, 0, 0.4);
+            transition: transform 0.1s;
+        }
+        .order-btn:active {
+            transform: scale(0.98);
         }
     </style>
 </head>
@@ -165,74 +271,68 @@
 
     <div class="header">
         <h1>ЧАС ПИК</h1>
-        <p>Меню вашего настроения • 10:00 - 23:00</p>
+        <p>МЕНЮ ВАШЕГО НАСТРОЕНИЯ • 10:00 - 23:00</p>
     </div>
 
     <div class="delivery-info">
-        🛵 <b>Доставка:</b><br>
-        • В квадрате: минимальный заказ от 5000 ₸<br>
-        • За пределами: минимальный заказ от 7000 ₸
+        🛵 <span class="delivery-highlight">Условия доставки:</span><br>
+        • Внутри квадрата: минимальный заказ от <span class="delivery-highlight">5 000 ₸</span><br>
+        • За пределами квадрата: минимальный заказ от <span class="delivery-highlight">7 000 ₸</span>
     </div>
 
     <div class="categories">
-        <button class="category-btn active" onclick="switchCategory('sets_cat')">Сеты</button>
-        <button class="category-btn" onclick="switchCategory('pizza_cat')">Пицца</button>
-        <button class="category-btn" onclick="switchCategory('rolls_cat')">Роллы</button>
-        <button class="category-btn" onclick="switchCategory('baskets_cat')">Баскеты & Закуски</button>
-        <button class="category-btn" onclick="switchCategory('drinks_cat')">Донеры & Напитки</button>
+        <button class="category-btn active" onclick="switchCategory('sets_cat')">🍱 Сеты</button>
+        <button class="category-btn" onclick="switchCategory('pizza_cat')">🍕 Пицца</button>
+        <button class="category-btn" onclick="switchCategory('rolls_cat')">🥢 Роллы</button>
+        <button class="category-btn" onclick="switchCategory('baskets_cat')">🍗 Баскеты</button>
+        <button class="category-btn" onclick="switchCategory('drinks_cat')">🥤 Напитки</button>
     </div>
 
     <div id="sets_cat" class="menu-section active">
         <div class="section-title">Фирменные Сеты</div>
-        
         <div id="sets_container"></div>
     </div>
 
     <div id="pizza_cat" class="menu-section">
-        <div class="section-title">Пицца (30 см)</div>
+        <div class="section-title">Горячая Пицца</div>
         <div id="pizza_container"></div>
     </div>
 
     <div id="rolls_cat" class="menu-section">
-        <div class="section-title">Холодные роллы (по 10 шт)</div>
+        <div class="section-title">Холодные роллы</div>
         <div id="classic_rolls_container"></div>
-        
         <div class="section-title">Жареные роллы</div>
         <div id="fried_rolls_container"></div>
-        
         <div class="section-title">Запечённые роллы</div>
         <div id="baked_rolls_container"></div>
-        
         <div class="section-title">Мини роллы</div>
         <div id="mini_rolls_container"></div>
     </div>
 
     <div id="baskets_cat" class="menu-section">
-        <div class="section-title">Баскеты (+ Кола 1л и Фри)</div>
+        <div class="section-title">Сытные Баскеты</div>
         <div id="baskets_container"></div>
-        
         <div class="section-title">Закуски</div>
         <div id="snacks_container"></div>
     </div>
 
     <div id="drinks_cat" class="menu-section">
-        <div class="section-title">Донеры и Айран</div>
+        <div class="section-title">Донеры</div>
         <div id="doners_container"></div>
-        
-        <div class="section-title">Напитки</div>
+        <div class="section-title">Освежающие Напитки</div>
         <div id="drinks_container"></div>
     </div>
 
     <div class="footer-bar" id="footerBar">
-        <button class="order-btn" onclick="sendOrder()">Оформить заказ на <span id="totalPriceBtn">0</span> ₸</button>
+        <button class="order-btn" onclick="sendOrder()">Оформить заказ • <span id="totalPriceBtn">0</span> ₸</button>
     </div>
 
     <script>
-        // БАЗА ДАННЫХ ВСЕХ ТОВАРОВ ИЗ ТВОИХ МАКЕТОВ
+        // БАЗА ДАННЫХ
         const menuData = {
             sets: [
-                { id: "set_chaspik", name: "Сет Час Пик", price: 21200, desc: "Филадельфия 10шт, Фила гриль 10шт, Калифорния 10шт, Каппа маки 10шт, Краб темпура 10шт, Цезарь темпура 10шт, Саке темпура 10шт, Саке маки 10шт, Бонито 10шт, Крылышки 30шт, Пепперони, Маргарита, Куриная пицца, Куриная с грибами, Фри 2, Кола 3л" },
-                { id: "set_1", name: "Сет №1", price: 5700, desc: "Филадельфия 10шт, Цезарь темпура 10шт, Пепперони, Компот 1л" },
+                { id: "set_chaspik", name: "Сет Час Пик", price: 21200, desc: "Филадельфия 10шт, Фила гриль 10шт, Калифорния 10шт, Каппа маки 10шт, Краб темпура 10шт, Цезарь темпура 10шт, Саке темпура 10шт, Саке маки 10шт, Бонито 10шт, Крылышки 30шт, Пепперони, Маргарита, Куриная пицца, Куриная с грибами, Фри 2, Кола 3л", badge: "premium" },
+                { id: "set_1", name: "Сет №1", price: 5700, desc: "Филадельфия 10шт, Цезарь темпура 10шт, Пепперони, Компот 1л", badge: "хит" },
                 { id: "set_2", name: "Сет №2", price: 6700, desc: "Цезарь темпура 10шт, Краб темпура 10шт, Саке темпура 10шт, Пепперони, Крылышки 10шт" },
                 { id: "set_3", name: "Сет №3", price: 6700, desc: "Цезарь темпура 20шт, Краб темпура 10шт, Саке темпура 10шт, Пепперони, Фри" },
                 { id: "set_4", name: "Сет №4", price: 7200, desc: "Филадельфия 10шт, Саке темпура 10шт, 4 сезона пицца, Крылышки 10шт, Компот 1л" },
@@ -247,7 +347,7 @@
                 { id: "set_13", name: "Сет №13", price: 8200, desc: "Филадельфия 10шт, Цезарь темпура 10шт, Саке темпура 10шт, Пепперони, 4 сезона пицца, Крылышки 10шт, Фри" },
                 { id: "set_14", name: "Сет №14", price: 9200, desc: "Бонито 10шт, Филадельфия 20шт, Цезарь темпура 20шт, Саке маки 10шт, Маргарита, Грибная пицца, Компот 1л" },
                 { id: "set_15", name: "Сет №15", price: 9200, desc: "Цезарь запеченный 10шт, Филадельфия 20шт, Калифорния 10шт, Пепперони, Маргарита, Крылышки 15шт" },
-                { id: "set_16", name: "Сет №16", price: 12700, desc: "Филадельфия 10шт, Цезарь темпура 10шт, Каппа маки 10шт, Бонито 10шт, Саке темпура 10шт, Саке маки 10шт, Калифорния 10шт, Пепперони, Куриная с грибами, 4 сезона пицца" },
+                { id: "set_16", name: "Сет №16", price: 12700, desc: "Филадельфия 10шт, Цезарь темпура 10шт, Каппа маки 10шт, Cult 10шт, Саке темпура 10шт, Саке маки 10шт, Калифорния 10шт, Пепперони, Куриная с грибами, 4 сезона пицца" },
                 { id: "set_17", name: "Сет №17", price: 15700, desc: "Филадельфия 10шт, Фила гриль 10шт, Калифорния 10шт, Каппа маки 10шт, Краб темпура 10шт, Цезарь темпура 10шт, Саке темпура 10шт, Саке маки 10шт, Бонито 10шт, Пепперони, Маргарита, Куриная пицца, Куриная с грибами, Компот 2л" },
                 { id: "set_18", name: "Сет №18", price: 5500, desc: "Цезарь темпура 10шт, Маргарита, Крылышки 10шт, Компот 1л" },
                 { id: "set_19", name: "Сет №19", price: 5800, desc: "Цезарь темпура 10шт, Пепперони, Наггетсы 10шт, Фри, Компот 1л" },
@@ -266,72 +366,72 @@
                 { id: "set_32", name: "Сет №32", price: 13200, desc: "Калифорния 10шт, Филадельфия 10шт, Цезарь запечённ. 10шт, Цезарь темпура 10шт, Бонито 10шт, Саке темпура 10шт, Фреш ролл 10шт, Аляска запечённ. 10шт, Каппа маки 10шт" }
             ],
             pizza: [
-                { id: "p_kur", name: "Куриная", price: 2100, desc: "Сочное куриное филе, сыр моцарелла, соус" },
-                { id: "p_syr", name: "Сырная", price: 2000, desc: "Классическое сочетание нежного сыра" },
-                { id: "p_mar", name: "Маргарита", price: 2000, desc: "Томаты, фирменный соус, моцарелла" },
-                { id: "p_pep", name: "Пепперони", price: 2100, desc: "Пикантные колбаски пепперони, моцарелла" },
-                { id: "p_grib", name: "Грибная", price: 2100, desc: "Ароматные грибы, нежный соус, сыр" },
-                { id: "p_k_grib", name: "Курица с грибами", price: 2100, desc: "Филе цыпленка, шампиньоны, сыр" },
-                { id: "p_4sez", name: "4 сезона", price: 2200, desc: "Четыре разных сектора с топпингами" },
-                { id: "p_barb", name: "Барбекю", price: 2200, desc: "Курица, соус барбекю, моцарелла" },
-                { id: "p_bol", name: "Болоньезе", price: 2300, desc: "Мясной фарш болоньезе, сырный борт" },
-                { id: "p_chaspik", name: "Час пик", price: 2600, desc: "Фирменная пицца с обилием начинки" },
-                { id: "p_ohot", name: "Охотничья", price: 2200, desc: "Охотничьи колбаски, маринованные огурцы" },
-                { id: "p_semga", name: "С сёмгой", price: 2400, desc: "Кусочки благородной сёмги, нежный сыр" }
+                { id: "p_kur", name: "Куриная", price: 2100, desc: "Сочное куриное филе, нежная моцарелла, фирменный соус" },
+                { id: "p_syr", name: "Сырная", price: 2000, desc: "Классический микс тягучих сыров на тонком тесте" },
+                { id: "p_mar", name: "Маргарита", price: 2000, desc: "Свежие томаты, ароматный соус, много сыра" },
+                { id: "p_pep", name: "Пепперони", price: 2100, desc: "Пикантные колбаски пепперони с легкой остринкой", badge: "хит" },
+                { id: "p_grib", name: "Грибная", price: 2100, desc: "Ароматные шампиньоны, моцарелла, белый соус" },
+                { id: "p_k_grib", name: "Курица с грибами", price: 2100, desc: "Куриное филе, лесные шампиньоны, нежный сыр" },
+                { id: "p_4sez", name: "4 сезона", price: 2200, desc: "Разнообразие вкусов в одной пицце (4 разных сектора)" },
+                { id: "p_barb", name: "Барбекю", price: 2200, desc: "Цыпленок, соус барбекю с дымком, моцарелла" },
+                { id: "p_bol", name: "Болоньезе", price: 2300, desc: "Фирменный мясной соус болоньезе, сырный бортик" },
+                { id: "p_chaspik", name: "Час пик", price: 2600, desc: "Наша фирменная пицца с двойной порцией начинки", badge: "new" },
+                { id: "p_ohot", name: "Охотничья", price: 2200, desc: "Колбаски охотничьи, маринованные огурчики, лук" },
+                { id: "p_semga", name: "С сёмгой", price: 2400, desc: "Кусочки слабосоленой сёмги, сливочный сыр" }
             ],
             classic_rolls: [
-                { id: "r_alaska", name: "Аляска", price: 2100, desc: "Сливочный сыр, лосось, огурец, кунжут" },
-                { id: "r_phila", name: "Филадельфия", price: 2200, desc: "Сливочный сыр, лосось, огурцы" },
-                { id: "r_phila_gril", name: "Филадельфия гриль", price: 2200, desc: "Сливочный сыр, лосось, огурцы" },
-                { id: "r_calif", name: "Калифорния", price: 2100, desc: "Сливочный сыр, снежный краб, огурцы, тобико" },
-                { id: "r_bonito", name: "Бонито", price: 2000, desc: "Сливочный сыр, сёмга, огурцы, стружка тунца" }
+                { id: "r_alaska", name: "Аляска", price: 2100, desc: "Сливочный сыр, лосось, огурец, обсыпка из кунжута" },
+                { id: "r_phila", name: "Филадельфия", price: 2200, desc: "Сливочный сыр, нежный лосось, свежие огурцы", badge: "хит" },
+                { id: "r_phila_gril", name: "Филадельфия гриль", price: 2200, desc: "Сливочный сыр, опаленный на гриле лосось, огурцы" },
+                { id: "r_calif", name: "Калифорния", price: 2100, desc: "Снежный краб, икра тобико, свежие огурцы" },
+                { id: "r_bonito", name: "Бонито", price: 2000, desc: "Сливочный сыр, сёмга, огурцы, нежная стружка тунца" }
             ],
             fried_rolls: [
-                { id: "rf_salmon", name: "Лосось темпура", price: 2100, desc: "Сёмга жареная, огурец, сыр сливочный" },
-                { id: "rf_sake", name: "Саке темпура", price: 2000, desc: "Сливочный сыр, сёмга, огурцы" },
-                { id: "rf_cezar", name: "Цезарь темпура", price: 2000, desc: "Курица, огурцы" },
-                { id: "rf_krab", name: "Краб темпура", price: 2000, desc: "Снежный краб, огурцы" },
-                { id: "rf_fresh", name: "Фреш ролл", price: 2100, desc: "Куриное филе, огурцы, помидоры, майонез" }
+                { id: "rf_salmon", name: "Лосось темпура", price: 2100, desc: "Жареная сёмга, огурец, сливочный сыр в хрустящей панировке" },
+                { id: "rf_sake", name: "Саке темпура", price: 2000, desc: "Сливочный сыр, сёмга, огурцы в темпуре" },
+                { id: "rf_cezar", name: "Цезарь темпура", price: 2000, desc: "Нежная курица, хрустящий огурчик, темпурный кляр" },
+                { id: "rf_krab", name: "Kраб темпура", price: 2000, desc: "Снежный краб, свежий огурец, соус" },
+                { id: "rf_fresh", name: "Фреш ролл", price: 2100, desc: "Куриное филе, огурцы, спелые томаты, майонез" }
             ],
             baked_rolls: [
-                { id: "rb_sake", name: "Саке хот", price: 1900, desc: "Сёмга, спайси соус" },
-                { id: "rb_kappa", name: "Каппа хот", price: 1800, desc: "Огурцы, спайси соус" },
-                { id: "rb_cezar", name: "Цезарь запеченный", price: 2200, desc: "Курица, огурцы, спайси соус" },
-                { id: "rb_calif", name: "Калифорния запеченная", price: 2200, desc: "Снежный краб, тобико, огурцы, спайси соус" },
-                { id: "rb_phila", name: "Филадельфия запеченная", price: 2200, desc: "Сливочный сыр, лосось, спайси соус" },
-                { id: "rb_alaska", name: "Аляска запечённая", price: 2300, desc: "Сливочный сыр, лосось, огурец, кунжут, спайси соус" }
+                { id: "rb_sake", name: "Саке хот", price: 1900, desc: "Запеченный ролл с сёмгой под спайси соусом" },
+                { id: "rb_kappa", name: "Каппа хот", price: 1800, desc: "Легкий запеченный ролл с огурцом" },
+                { id: "rb_cezar", name: "Цезарь запеченный", price: 2200, desc: "Курица, огурец, шапочка из запеченного соуса" },
+                { id: "rb_calif", name: "Калифорния запеченная", price: 2200, desc: "Снежный краб, тобико, огурцы, запеченный соус" },
+                { id: "rb_phila", name: "Филадельфия запеченная", price: 2200, desc: "Лосось, сливочный сыр под запеченной шапочкой" },
+                { id: "rb_alaska", name: "Аляска запечённая", price: 2300, desc: "Сливочный сыр, лосось, огурец, кунжут, соус" }
             ],
             mini_rolls: [
-                { id: "rm_kappa", name: "Каппа маки", price: 1400, desc: "Ролл с огурцом" },
-                { id: "rm_sake", name: "Саке маки", price: 1600, desc: "Ролл с сёмгой" },
-                { id: "rm_krab", name: "Краб маки", price: 1500, desc: "Ролл с крабом" }
+                { id: "rm_kappa", name: "Каппа маки", price: 1400, desc: "Мини-ролл со свежим огурцом" },
+                { id: "rm_sake", name: "Саке маки", price: 1600, desc: "Мини-ролл со свежим лососем" },
+                { id: "rm_krab", name: "Краб маки", price: 1500, desc: "Мини-ролл со снежным крабом" }
             ],
             baskets: [
-                { id: "b_1", name: "Баскет 1 (20шт)", price: 5300, desc: "Крылышки 20 шт + Кола 1л и картофель фри" },
-                { id: "b_2", name: "Баскет 2 (27шт)", price: 6300, desc: "Крылышки 27 шт + Кола 1л и картофель фри" },
-                { id: "b_3", name: "Баскет 3 (35шт)", price: 7300, desc: "Крылышки 35 шт + Кола 1л и картофель фри" },
-                { id: "b_4", name: "Баскет 4 (50шт)", price: 8800, desc: "Крылышки 50 шт + Кола 1л и картофель фри" }
+                { id: "b_1", name: "Баскет 1 (20шт)", price: 5300, desc: "Крылышки 20 шт + Кола 1л и золотистый фри" },
+                { id: "b_2", name: "Баскет 2 (27шт)", price: 6300, desc: "Крылышки 27 шт + Кола 1л и золотистый фри" },
+                { id: "b_3", name: "Баскет 3 (35шт)", price: 7300, desc: "Крылышки 35 шт + Кола 1л и золотистый фри" },
+                { id: "b_4", name: "Баскет 4 (50шт)", price: 8800, desc: "Крылышки 50 шт + Кола 1л и золотистый фри", badge: "party" }
             ],
             snacks: [
-                { id: "sn_w10_ks", name: "Крылышки 10 шт (кисло-сладкий)", price: 2400, desc: "В фирменном кисло-сладком соусе" },
-                { id: "sn_w10", name: "Крылышки 10 шт", price: 2100, desc: "Классические хрустящие крылышки" },
-                { id: "sn_nag", name: "Куриные наггетсы 10 шт", price: 1500, desc: "Нежное белое куриное мясо в панировке" },
-                { id: "sn_fri", name: "Шарики фри (250гр)", price: 1300, desc: "Картофельные шарики во фритюре" },
-                { id: "sn_pure_fri", name: "Фри", price: 900, desc: "Порция золотистого картофеля фри" },
-                { id: "sn_sticks", name: "Сырные палочки", price: 1400, desc: "Тягучий сыр в хрустящей корочке" },
-                { id: "sn_sauce", name: "Соус (сырный/чесночный/кетчуп)", price: 300, desc: "Дополнительный соус на выбор" }
+                { id: "sn_w10_ks", name: "Крылышки 10 шт (кисло-сладкий)", price: 2400, desc: "В фирменном глубоком кисло-сладком соусе" },
+                { id: "sn_w10", name: "Крылышки 10 шт", price: 2100, desc: "Хрустящие крылышки во фритюре" },
+                { id: "sn_nag", name: "Куриные наггетсы 10 шт", price: 1500, desc: "Обжаренное филе в золотистой панировке" },
+                { id: "sn_fri", name: "Шарики фри (250гр)", price: 1300, desc: "Картофельные шарики с мягкой начинкой" },
+                { id: "sn_pure_fri", name: "Картофель фри", price: 900, desc: "Классический хрустящий картофель фри" },
+                { id: "sn_sticks", name: "Сырные палочки", price: 1400, desc: "Тягучий моцарелла-сыр в панировке" },
+                { id: "sn_sauce", name: "Доп. Соус на выбор", price: 300, desc: "Сырный, чесночный или классический кетчуп" }
             ],
             doners: [
-                { id: "dn_1", name: "Донер (1)", price: 1700, desc: "Стандартная порция сочного донера" },
-                { id: "dn_15", name: "Донер (1.5)", price: 2000, desc: "Увеличенная порция для крепкого аппетита" },
-                { id: "dn_ayran", name: "Айран", price: 400, desc: "Освежающий кисломолочный напиток" }
+                { id: "dn_1", name: "Донер (1)", price: 1700, desc: "Сочное мясо, хрустящий лаваш, свежие овощи" },
+                { id: "dn_15", name: "Донер (1.5)", price: 2000, desc: "Большая сытная порция для истинных гурманов" },
+                { id: "dn_ayran", name: "Айран", price: 400, desc: "Традиционный освежающий напиток" }
             ],
             drinks: [
-                { id: "dr_cola", name: "Fanta / Coca-Cola 1 л", price: 800, desc: "" },
+                { id: "dr_cola", name: "Coca-Cola / Fanta 1 л", price: 800, desc: "" },
                 { id: "dr_bona", name: "Bonaqua 1 л", price: 600, desc: "" },
-                { id: "dr_piko", name: "PIKO 1 л", price: 1000, desc: "" },
+                { id: "dr_piko", name: "Сок PIKO 1 л", price: 1000, desc: "" },
                 { id: "dr_fuse", name: "Fuse-tea 1 л", price: 900, desc: "" },
-                { id: "dr_comp", name: "Компот", price: 900, desc: "Фирменный домашний компот" },
+                { id: "dr_comp", name: "Домашний Компот", price: 900, desc: "Натуральный охлажденный компот" },
                 { id: "dr_juice", name: "Каркадэ / Яблоко 1 л", price: 600, desc: "" }
             ]
         };
@@ -342,7 +442,6 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // ФУНКЦИЯ ДЛЯ ГЕНЕРАЦИИ КАРТОЧЕК В HTML
         function generateCards(itemsArray, containerId) {
             const container = document.getElementById(containerId);
             if (!container) return;
@@ -351,13 +450,14 @@
             itemsArray.forEach(item => {
                 html += `
                     <div class="item-card">
+                        ${item.badge ? `<div class="badge">${item.badge}</div>` : ''}
                         <div class="item-details">
                             <div>
                                 <h3>${item.name}</h3>
                                 ${item.desc ? `<p>${item.desc}</p>` : ''}
                             </div>
                             <div class="item-row">
-                                <div class="price">${item.price} ₸</div>
+                                <div class="price">${item.price.toLocaleString()} ₸</div>
                                 <div class="controls">
                                     <button class="cnt-btn" onclick="changeQty('${item.id}', -1, '${item.name}', ${item.price})">-</button>
                                     <span class="cnt-value" id="qty_${item.id}">0</span>
@@ -371,7 +471,7 @@
             container.innerHTML = html;
         }
 
-        // Рендерим всё наполнение при загрузке страницы
+        // Рендерим всё
         generateCards(menuData.sets, 'sets_container');
         generateCards(menuData.pizza, 'pizza_container');
         generateCards(menuData.classic_rolls, 'classic_rolls_container');
@@ -389,6 +489,7 @@
             
             document.getElementById(catId).classList.add('active');
             event.currentTarget.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function changeQty(id, change, name, price) {
@@ -437,7 +538,7 @@
 
             const orderData = {
                 items: orderStrings.join(', '),
-                total_price: totalSum + " ₸"
+                total_price: totalSum.toLocaleString() + " ₸"
             };
 
             tg.sendData(JSON.stringify(orderData));
